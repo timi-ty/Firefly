@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Firefly.Core.Behaviour;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -33,16 +32,19 @@ namespace Firefly.Core.Application
 
             scene.GetRootGameObjects(rootObjects);
 
+            int i = 0;
             foreach (var rootObject in rootObjects)
             {
                 BaseBehaviour baseBehaviour = rootObject.GetComponent<BaseBehaviour>();
                 if (baseBehaviour)
                 {
+                    i++;
+                    Debug.Log($"{nameof(SceneManager)}:::Waking up: {baseBehaviour.name}");
                     baseBehaviour.Awaken();
                 }
             }
             
-            Debug.Log($"{nameof(SceneManager)}:::Scene Awoke.");
+            Debug.Log($"{nameof(SceneManager)}:::Scene Awoke | Root Obj Count: {rootObjects.Count} | Awoken Root Obj Count: {i}");
         }
     }
 }

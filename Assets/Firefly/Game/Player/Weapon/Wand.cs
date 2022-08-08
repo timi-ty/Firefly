@@ -1,18 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
+using Firefly.Core;
 using UnityEngine;
 
-public class Wand : MonoBehaviour
+namespace Firefly.Game
 {
-    // Start is called before the first frame update
-    void Start()
+    public class Wand : BaseBehaviour
     {
-        
-    }
+        [SerializeField] 
+        private GameObjectPool<Projectile> _projectilePool;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        [SerializeField] 
+        private Transform _projectileOrigin;
+
+        protected override void OnAwaken()
+        {
+            GameObject wandProjectileHolder = new GameObject("WandProjectileHolder");
+            _projectilePool.Create(wandProjectileHolder.transform);
+        }
+
+        public void Wave()
+        {
+            var position = _projectileOrigin.position;
+            Projectile projectile = _projectilePool.Acquire(position);
+            projectile.Fire(position, _projectileOrigin.forward, 5);
+        }
     }
 }

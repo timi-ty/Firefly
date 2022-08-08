@@ -1,15 +1,15 @@
-using Firefly.Core.Behaviour;
+using Firefly.Core;
 using UnityEngine;
 
 namespace Firefly.Game.Management
 {
     public class GameManager : BaseBehaviour
     {
-        public bool isMobile;
+        [SerializeField] private bool _isMobile;
 
         protected override void OnAwaken()
         {
-            StartGameIncident.PublishWith(isMobile);
+            StartGameIncident.PublishWith(_isMobile);
         }
     }
 }

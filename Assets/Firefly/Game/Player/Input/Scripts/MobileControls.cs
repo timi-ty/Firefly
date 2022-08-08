@@ -1,9 +1,7 @@
-using System;
-using Firefly.Core.Behaviour;
+using Firefly.Core;
 using Firefly.Game.Management;
-using UnityEngine;
 
-namespace Firefly.Game.Player.Input
+namespace Firefly.Game
 {
     public class MobileControls : BaseBehaviour
     {

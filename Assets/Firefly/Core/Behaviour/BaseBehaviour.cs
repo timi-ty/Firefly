@@ -1,23 +1,36 @@
 using UnityEngine;
 
-namespace Firefly.Core.Behaviour
+namespace Firefly.Core
 {
     public abstract class BaseBehaviour : MonoBehaviour
     {
         public void Awaken()
         {
-            int childCount = transform.childCount;
+            AwakenChildren(transform);
+            
+            OnAwaken();
+        }
+
+        private void AwakenChildren(Transform parentTransform)
+        {
+            int childCount = parentTransform.childCount;
+
+            if (childCount <= 0) return;
 
             for (int i = 0; i < childCount; i++)
             {
-                BaseBehaviour child = transform.GetChild(i).GetComponent<BaseBehaviour>();
-                if (child)
+                Transform childTransform = parentTransform.GetChild(i);
+                BaseBehaviour childBehaviour = childTransform.GetComponent<BaseBehaviour>();
+                
+                if (childBehaviour)
                 {
-                    child.Awaken();
+                    childBehaviour.Awaken();
+                }
+                else
+                {
+                    AwakenChildren(childTransform);
                 }
             }
-            
-            OnAwaken();
         }
 
         protected virtual void OnAwaken(){}
