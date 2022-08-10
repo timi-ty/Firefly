@@ -7,39 +7,31 @@ namespace Firefly.Core.Application
     /// <summary>
     /// This is the entry point for every scene. Awake and start methods should never be used except here. Every member of a scene should come alive in OnAwaken().
     /// </summary>
-    public class SceneManager : BaseBehaviour
+    public class SceneManager : SingletonBehaviour<SceneManager>
     {
-        private static SceneManager Instance { get; set; }
-        
         private void Awake()
         {
-            if (!Instance)
-            {
-                Instance = this;
-                AwakenScene();
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+            if (!Instance) AwakenScene();
         }
 
         private static void AwakenScene()
         {
             Scene scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
 
-            List<GameObject> rootObjects = new List<GameObject>();
+            List<GameObject> rootObjects = new();
 
             scene.GetRootGameObjects(rootObjects);
 
             int i = 0;
-            foreach (var rootObject in rootObjects)
+            foreach (GameObject rootObject in rootObjects)
             {
-                BaseBehaviour baseBehaviour = rootObject.GetComponent<BaseBehaviour>();
-                if (baseBehaviour)
+                IBaseBehaviour[] baseBehaviours = rootObject.GetComponents<IBaseBehaviour>();
+                foreach (IBaseBehaviour baseBehaviour in baseBehaviours)
                 {
+                    if (baseBehaviour == null) continue;
+                    
                     i++;
-                    Debug.Log($"{nameof(SceneManager)}:::Waking up: {baseBehaviour.name}");
+                    Debug.Log($"{nameof(SceneManager)}:::Waking up: {baseBehaviour.Name}");
                     baseBehaviour.Awaken();
                 }
             }

@@ -20,7 +20,7 @@ namespace Firefly.Game.Management
         /// <param name="publishPending">Controls whether this subscription publishes immediately with the current state of the incident.</param>
         public static void Subscribe(Action<StartGameIncident> subscription, BaseBehaviour context, bool publishPending = true)
         {
-            if(publishPending && Instance.HasBeenPublished) subscription?.Invoke(Instance);
+            if (publishPending && Instance.HasBeenPublished) subscription?.Invoke(Instance);
             
             Instance.BaseSubscribe(subscription, context);
         }

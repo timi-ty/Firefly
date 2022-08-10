@@ -19,7 +19,7 @@ namespace Firefly.Game
             _direction = direction;
             _lifeTime = lifeTime;
             
-            CameraDirector.CreateVibration(VibrationLevel.Heavy, 0.1f);
+            CameraDirector.VibrateHeavy(0.15f);
         }
 
         private void Update()

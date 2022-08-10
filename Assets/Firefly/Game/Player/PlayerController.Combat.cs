@@ -9,17 +9,10 @@ namespace Firefly.Game
         private Wand _wand;
 
         private bool _fireInput;
-        private float _fireCooldown;
 
-        private void CombatUpdate(float deltaTime)
+        private void CombatUpdate()
         {
-            _fireCooldown -= _fireCooldown > 0 ? deltaTime : 0;
-            
-            if (_fireInput && _fireCooldown <= 0)
-            {
-                _fireCooldown = 0.2f;
-                _wand.Wave();
-            }
+            if (_fireInput) _wand.Wave();
         }
         
         #region Input Receivers

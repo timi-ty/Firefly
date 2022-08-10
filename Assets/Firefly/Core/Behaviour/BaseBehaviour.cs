@@ -1,9 +1,27 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Firefly.Core
 {
-    public abstract class BaseBehaviour : MonoBehaviour
+    public abstract class BaseBehaviour : MonoBehaviour, IBaseBehaviour
     {
+        #region Stubbed Out Unity Runtime
+
+        private void Awake()
+        {
+            //Do nothing
+        }
+
+        private void Start()
+        {
+            //Do nothing
+        }
+
+        #endregion
+
+        public string Name => name;
+
         public void Awaken()
         {
             AwakenChildren(transform);
@@ -31,6 +49,18 @@ namespace Firefly.Core
                     AwakenChildren(childTransform);
                 }
             }
+        }
+
+        protected void PostAction(Action action, float delayTime)
+        {
+            StartCoroutine(UtilityCoroutine(action, delayTime));
+        }
+
+        private IEnumerator UtilityCoroutine(Action action, float delayTime)
+        {
+            yield return new WaitForSeconds(delayTime);
+            
+            action?.Invoke();
         }
 
         protected virtual void OnAwaken(){}

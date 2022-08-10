@@ -57,7 +57,7 @@ namespace Firefly.Game
         {
             MovementParameterUpdate(Time.deltaTime);
             
-            CombatUpdate(Time.deltaTime);
+            CombatUpdate();
         }
 
         private void FixedUpdate()

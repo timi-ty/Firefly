@@ -1,3 +1,4 @@
+using System;
 using Firefly.Core;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ namespace Firefly.Game
 
         [SerializeField] 
         private Transform _projectileOrigin;
+        
+        private float _fireCooldown;
 
         protected override void OnAwaken()
         {
@@ -17,11 +20,20 @@ namespace Firefly.Game
             _projectilePool.Create(wandProjectileHolder.transform);
         }
 
+        private void Update()
+        {
+            _fireCooldown -= _fireCooldown > 0 ? Time.deltaTime : 0;
+        }
+
         public void Wave()
         {
+            if(_fireCooldown > 0) return;
+            
             var position = _projectileOrigin.position;
             Projectile projectile = _projectilePool.Acquire(position);
             projectile.Fire(position, _projectileOrigin.forward, 5);
+            
+            _fireCooldown = 0.2f;
         }
     }
 }
