@@ -18,8 +18,6 @@ namespace Firefly.Game
             pTransform.forward = direction;
             _direction = direction;
             _lifeTime = lifeTime;
-            
-            CameraDirector.VibrateHeavy(0.15f);
         }
 
         private void Update()

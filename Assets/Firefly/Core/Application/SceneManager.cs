@@ -9,9 +9,16 @@ namespace Firefly.Core.Application
     /// </summary>
     public class SceneManager : SingletonBehaviour<SceneManager>
     {
+        [SerializeField] 
+        private int _targetFps = 60;
+        
         private void Awake()
         {
-            if (!Instance) AwakenScene();
+            if (!Instance)
+            {
+                UnityEngine.Application.targetFrameRate = _targetFps;
+                AwakenScene();
+            }
         }
 
         private static void AwakenScene()

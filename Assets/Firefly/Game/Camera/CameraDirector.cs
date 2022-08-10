@@ -10,16 +10,11 @@ namespace Firefly.Game.Camera
         private Oscillator _oscillator;
 
         [SerializeField] 
-        private float _heavyVibrationMagnitude;
+        OscillationImpulse _heavyOscillationImpulse = OscillationImpulse.Impulse10();
 
         public static void VibrateHeavy(float duration)
         {
-            OscillationConfig heavyOscillation = OscillationConfig.Default();
-            heavyOscillation._targetOscillationMagnitude = Instance._heavyVibrationMagnitude;
-            heavyOscillation._randomizePosition = false;
-            heavyOscillation._rotationScale = Vector3.right;
-
-            Instance._oscillator.ModifyOscillation(heavyOscillation, duration);
+            Instance._oscillator.Impulse(Instance._heavyOscillationImpulse);
         }
     }
 }

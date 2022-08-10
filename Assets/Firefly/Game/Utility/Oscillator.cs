@@ -21,6 +21,8 @@ namespace Firefly.Game.Utility
         public bool _randomizePosition;
         [SerializeField]
         public Vector3 _rotationScale;
+        [SerializeField]
+        public bool _invertSineWave;
 
         public static OscillationConfig Default()
         {
@@ -35,6 +37,36 @@ namespace Firefly.Game.Utility
             };
 
             return oscillationConfig;
+        }
+    }
+    
+    [Serializable]
+    public struct OscillationImpulse
+    {
+        [Header("Oscillation Impulse Settings")]
+        [SerializeField]
+        public float _magnitude;
+        [SerializeField]
+        public float _growthRate;
+        [SerializeField]
+        public float _decayRate;
+        [SerializeField]
+        public Vector3 _positionScale;
+        [SerializeField]
+        public Vector3 _rotationScale;
+        
+        public static OscillationImpulse Impulse10()
+        {
+            OscillationImpulse oscillationImpulse = new()
+            {
+                _magnitude = 10,
+                _growthRate = 100,
+                _decayRate = 20,
+                _positionScale = Vector3.up,
+                _rotationScale = Vector3.right
+            };
+
+            return oscillationImpulse;
         }
     }
     
@@ -58,24 +90,26 @@ namespace Firefly.Game.Utility
         private Vector3 _lastAppliedRotationOffset;
         private bool _wasNegative;
 
-        private OscillationConfig _defaultOscillationConfig;
-
+        private OscillationImpulse _oscillationImpulse;
+        private float _impulseMagnitude;
+        private float _decayTime;
+        
         #endregion
-
-        protected override void OnAwaken()
-        {
-            _defaultOscillationConfig = _oscillationConfig;
-        }
 
         private void LateUpdate()
         {
+            bool isDecaying = Time.time >= _decayTime;
+            float impulseTarget = isDecaying ? 0 : _oscillationImpulse._magnitude;
+            float impulseDelta = (isDecaying ? _oscillationImpulse._decayRate : _oscillationImpulse._growthRate) * Time.deltaTime;
+            _impulseMagnitude = Mathf.MoveTowards(_impulseMagnitude, impulseTarget, impulseDelta);
+            
             _oscillationFrequency = Mathf.MoveTowards(_oscillationFrequency, _oscillationConfig._targetOscillationFrequency,
                 _oscillationConfig._oscillationAgility * Time.deltaTime);
-            _oscillationMagnitude = Mathf.MoveTowards(_oscillationMagnitude, _oscillationConfig._targetOscillationMagnitude,
+            _oscillationMagnitude = Mathf.MoveTowards(_oscillationMagnitude, _oscillationConfig._targetOscillationMagnitude, 
                 _oscillationConfig._oscillationAgility * Time.deltaTime);
             
             float angle = 2 * Mathf.PI * _oscillationFrequency * Time.time;
-            float normalizedMagnitude = Mathf.Sin(angle);
+            float normalizedMagnitude = _oscillationConfig._invertSineWave ? Mathf.Abs(Mathf.Sin(angle)) : Mathf.Sin(angle);
 
             if (_oscillationConfig._randomizePosition &&_wasNegative && normalizedMagnitude >= 0)
             {
@@ -83,8 +117,10 @@ namespace Firefly.Game.Utility
             }
 
             Vector3 positionScale = _oscillationConfig._randomizePosition ? _randomizedPositionScale : _oscillationConfig._positionScale;
-            Vector3 positionOffset = positionScale * (normalizedMagnitude * _oscillationMagnitude);
-            Vector3 rotationOffset = _oscillationConfig._rotationScale * (normalizedMagnitude * _oscillationMagnitude);
+            Vector3 positionOffset = positionScale * (normalizedMagnitude * _oscillationMagnitude) 
+                                     + (_impulseMagnitude * _oscillationImpulse._positionScale);
+            Vector3 rotationOffset = _oscillationConfig._rotationScale * (normalizedMagnitude * _oscillationMagnitude) 
+                                     + (_impulseMagnitude * _oscillationImpulse._rotationScale);
             
             Transform scopedTransform = transform;
             scopedTransform.position += positionOffset - _lastAppliedPositionOffset;
@@ -97,19 +133,18 @@ namespace Firefly.Game.Utility
 
         public void SetOscillationConfig(OscillationConfig newConfig)
         {
-            _oscillationConfig = _defaultOscillationConfig = newConfig;
-        }
-
-        public void ModifyOscillation(OscillationConfig newConfig, float resetAfter = 1)
-        {
             _oscillationConfig = newConfig;
-            
-            PostAction(ResetOscillationConfig, resetAfter);
         }
 
-        private void ResetOscillationConfig()
+        public void Impulse(OscillationImpulse oscillationImpulse)
         {
-            _oscillationConfig = _defaultOscillationConfig;
+            float impulseDiff = oscillationImpulse._magnitude - _impulseMagnitude;
+            
+            if (impulseDiff > 0)
+            {
+                _oscillationImpulse = oscillationImpulse;
+                _decayTime = Time.time + impulseDiff / oscillationImpulse._growthRate;
+            }
         }
     }
 }
