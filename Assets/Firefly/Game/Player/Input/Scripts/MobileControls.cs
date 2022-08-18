@@ -5,14 +5,19 @@ namespace Firefly.Game
 {
     public class MobileControls : BaseBehaviour
     {
-        private void Start()
+        protected override void OnAwaken()
         {
-            StartGameIncident.Subscribe(OnGameStart, this);
+            StartGameIncident.Instance.Subscribe(OnGameStart, this);
         }
 
-        private void OnGameStart(StartGameIncident startGameIncident)
+        private void OnGameStart(StartGameIncident.Data startGameIncident)
         {
-            if (!startGameIncident.IsMobile) gameObject.SetActive(false);
+            gameObject.SetActive(startGameIncident.IsMobile);
+        }
+
+        private void OnDestroy()
+        {
+            StartGameIncident.Instance.Unsubscribe(this);
         }
     }
 }

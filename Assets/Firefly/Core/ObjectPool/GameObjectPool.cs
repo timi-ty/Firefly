@@ -77,7 +77,7 @@ namespace Firefly.Core
             }
             else
             {
-                Debug.LogError($"{nameof(GameObjectPool<T>)}:::Tired to recycle {poolObject.name}, but it does not belong to this pool");
+                Debug.LogError($"{nameof(GameObjectPool<T>)}:::Tried to recycle {poolObject.name}, but it does not belong to this pool");
             }
         }
     }

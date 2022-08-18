@@ -13,11 +13,6 @@ namespace Firefly.Core
             //Do nothing
         }
 
-        private void Start()
-        {
-            //Do nothing
-        }
-
         #endregion
 
         public string Name => name;

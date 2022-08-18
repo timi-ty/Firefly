@@ -1,3 +1,4 @@
+using System;
 using Firefly.Core;
 using UnityEngine;
 
@@ -7,9 +8,9 @@ namespace Firefly.Game.Management
     {
         [SerializeField] private bool _isMobile;
 
-        protected override void OnAwaken()
+        private void Start()
         {
-            StartGameIncident.PublishWith(_isMobile);
+            StartGameIncident.Instance.Publish(new StartGameIncident.Data(_isMobile));
         }
     }
 }

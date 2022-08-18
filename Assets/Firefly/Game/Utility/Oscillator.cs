@@ -111,7 +111,7 @@ namespace Firefly.Game.Utility
             float angle = 2 * Mathf.PI * _oscillationFrequency * Time.time;
             float normalizedMagnitude = _oscillationConfig._invertSineWave ? Mathf.Abs(Mathf.Sin(angle)) : Mathf.Sin(angle);
 
-            if (_oscillationConfig._randomizePosition &&_wasNegative && normalizedMagnitude >= 0)
+            if (_oscillationConfig._randomizePosition && _wasNegative && normalizedMagnitude >= 0)
             {
                 _randomizedPositionScale = Vector3.Scale(Random.onUnitSphere, _oscillationConfig._positionScale);
             }
