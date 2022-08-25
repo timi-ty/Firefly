@@ -68,7 +68,7 @@ namespace Firefly.Core.Incident
             return _incidentSubscriptions.Remove(context);
         }
 
-        public void Publish(T incidentData)
+        public void Publish(ref T incidentData)
         {
             foreach (var subscription in _incidentSubscriptions)
             {

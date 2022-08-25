@@ -10,7 +10,8 @@ namespace Firefly.Game.Management
 
         private void Start()
         {
-            StartGameIncident.Instance.Publish(new StartGameIncident.Data(_isMobile));
+            var incidentData = new StartGameIncident.Data(_isMobile);
+            //StartGameIncident.Instance.Publish(incidentData);
         }
     }
 }
