@@ -38,7 +38,6 @@ namespace Firefly.Core.Application
                     if (baseBehaviour == null) continue;
                     
                     i++;
-                    Debug.Log($"{nameof(SceneManager)}:::Waking up: {baseBehaviour.Name}");
                     baseBehaviour.Awaken();
                 }
             }

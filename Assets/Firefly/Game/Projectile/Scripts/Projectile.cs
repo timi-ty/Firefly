@@ -1,36 +1,40 @@
 using Firefly.Core;
+using Firefly.Core.Math;
 using Firefly.Game.Camera;
 using UnityEngine;
 
 namespace Firefly.Game
 {
-    public class Projectile : PoolableGameObject<Projectile>
+    public class Projectile : PoolableGameObject
     {
-        protected override Projectile Self() => this;
-
         private Vector3 _direction;
-        private float _lifeTime;
+        private float _speed;
 
-        public void Fire(Vector3 origin, Vector3 direction, float lifeTime)
+        public void Fire(Vector3 origin, Vector3 direction, float speed)
         {
             var pTransform = transform;
             pTransform.position = origin;
-            pTransform.forward = direction;
-            _direction = direction;
-            _lifeTime = lifeTime;
+            _direction = direction.X0Z();
+            pTransform.forward = _direction;
+            
+            _speed = speed;
         }
 
         private void Update()
         {
-            if(_lifeTime <= 0)
-            {
-                Deactivate();
-                return;
-            }
+            transform.position += _direction * (_speed * Time.deltaTime);
+        }
 
-            _lifeTime -= Time.deltaTime;
+        protected override void OnActivate()
+        {
+            _direction = default;
+            _speed = 0;
+        }
 
-            transform.position += _direction * (25 * Time.deltaTime);
+        protected override void OnDeactivate()
+        {
+            _direction = default;
+            _speed = 0;
         }
     }
 }

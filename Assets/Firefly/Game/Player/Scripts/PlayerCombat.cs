@@ -1,16 +1,17 @@
+using Firefly.Core;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Firefly.Game
 {
-    public partial class PlayerController
+    public class PlayerCombat : BaseBehaviour
     {
         [SerializeField] 
         private Wand _wand;
 
         private bool _fireInput;
 
-        private void CombatUpdate()
+        private void Update()
         {
             if (_fireInput) _wand.Wave();
         }

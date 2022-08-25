@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657815, g: 0.49641192, b: 0.57481617, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -751,7 +751,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SendPointerHoverToParent: 1
   m_MoveRepeatDelay: 0.5
   m_MoveRepeatRate: 0.1
   m_XRTrackingOrigin: {fileID: 0}
@@ -780,6 +779,7 @@ GameObject:
   - component: {fileID: 1206028600}
   - component: {fileID: 1206028601}
   - component: {fileID: 1206028602}
+  - component: {fileID: 1206028603}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -831,7 +831,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b02f66242c2df504dadb5bc676494491, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _wand: {fileID: 1493106054}
   _rotationAgility: 5
   _directionAgility: 5
   _maxSpeed: 20
@@ -940,8 +939,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1206028601}
-        m_TargetAssemblyTypeName: Firefly.Game.PlayerController, Assembly-CSharp
+      - m_Target: {fileID: 1206028603}
+        m_TargetAssemblyTypeName: Firefly.Game.PlayerCombat, Assembly-CSharp
         m_MethodName: FireInput
         m_Mode: 0
         m_Arguments:
@@ -959,6 +958,19 @@ MonoBehaviour:
   m_DefaultActionMap: Game
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1206028603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1206028598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4eb2c9d0060429aae7764286489a7af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _wand: {fileID: 1493106054}
 --- !u!1 &1330613179
 GameObject:
   m_ObjectHideFlags: 0
@@ -1203,6 +1215,8 @@ MonoBehaviour:
     _objectPrefab: {fileID: 666853309688145643, guid: 6b58c64e1d7d27240bd6aa781f138399, type: 3}
     _size: 50
   _projectileOrigin: {fileID: 279514237}
+  _projectileSpeed: 25
+  _fireCooldown: 0.175
 --- !u!1 &1532917461
 GameObject:
   m_ObjectHideFlags: 0

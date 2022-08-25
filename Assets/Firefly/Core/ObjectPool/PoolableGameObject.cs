@@ -2,38 +2,53 @@ using UnityEngine;
 
 namespace Firefly.Core
 {
-    public abstract class PoolableGameObject<T> : MonoBehaviour where T : PoolableGameObject<T>
+    public abstract class PoolableGameObject : BaseBehaviour
     {
-        private GameObjectPool<T> _pool;
+        [Header("Poolable Object")][SerializeField]
+        private float _lifeTime;
+        
+        public bool IsActive { get; private set; }
 
-        public void AddToPool(GameObjectPool<T> pool, bool deactivate = true)
+        private float _remainingLifeTime;
+        
+        private void Update()
         {
-            if (_pool != null)
+            if(_remainingLifeTime <= 0)
             {
-                Debug.LogError($"{nameof(PoolableGameObject<T>)}:::This object is already part of a pool");
+                Deactivate();
                 return;
             }
-            
-            _pool = pool;
 
-            if (deactivate) gameObject.SetActive(false);
-            
-            _pool.Recycle(Self());
+            _remainingLifeTime -= Time.deltaTime;
+        }
+
+
+        public void Activate()
+        {
+            _remainingLifeTime = _lifeTime;
+            IsActive = true;
+            gameObject.SetActive(true);
+            OnActivate();
         }
         
         /// <summary>
-        /// Marks this poolable object to be recycled. Use in place of destroying the object if it is poolable.
+        /// Marks this poolable object to be recycled. Use in place of destroying the poolable object.
         /// </summary>
-        protected void Deactivate()
+        public void Deactivate()
         {
+            IsActive = false;
             gameObject.SetActive(false);
-            _pool.Recycle(Self());
+            OnDeactivate();
         }
 
         /// <summary>
-        /// Return the instance of the poolable object here.
+        /// A poolable object must define a function that activates it. This function should be written like a constructor.
         /// </summary>
-        /// <returns></returns>
-        protected abstract T Self();
+        protected abstract void OnActivate();
+        
+        /// <summary>
+        /// A poolable object must define a function that resets it's behaviour when it gets deactivated. This should be written like a destructor.
+        /// </summary>
+        protected abstract void OnDeactivate();
     }
 }

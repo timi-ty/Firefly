@@ -13,7 +13,7 @@ namespace Firefly.Core.Tests
             for (int i = 0; i < subscriberCount; i++)
             {
                 BaseBehaviour bB = new GameObject().AddComponent<TestBehaviour>();
-                TestIncident.Instance.Subscribe(data => { int i = 0; }, bB);
+                //TestIncident.Instance.Subscribe(data => { int i = 0; }, bB);
             }
             
             int publishCount = 100000;

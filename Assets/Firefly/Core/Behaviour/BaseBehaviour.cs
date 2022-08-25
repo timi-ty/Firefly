@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Firefly.Core
 {
@@ -16,10 +17,18 @@ namespace Firefly.Core
         #endregion
 
         public string Name => name;
+        
+        private bool IsAwoken { get; set; }
 
         public void Awaken()
         {
+            if (IsAwoken) return;
+            
+            IsAwoken = true;
+
             AwakenChildren(transform);
+            
+            Debug.Log($"Waking up:::{this}");
             
             OnAwaken();
         }

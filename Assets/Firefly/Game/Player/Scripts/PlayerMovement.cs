@@ -6,7 +6,7 @@ using Vector2 = UnityEngine.Vector2;
 
 namespace Firefly.Game
 {
-    public partial class PlayerController : BaseBehaviour
+    public class PlayerMovement : BaseBehaviour
     {
         #region Movement Settings
 
@@ -56,8 +56,6 @@ namespace Firefly.Game
         private void Update()
         {
             MovementParameterUpdate(Time.deltaTime);
-            
-            CombatUpdate();
         }
 
         private void FixedUpdate()

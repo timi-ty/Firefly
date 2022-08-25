@@ -6,7 +6,7 @@ using Object = UnityEngine.Object;
 namespace Firefly.Core
 {
     [Serializable]
-    public class GameObjectPool<T> where T : PoolableGameObject<T>
+    public class GameObjectPool<T> where T : PoolableGameObject
     {
         [SerializeReference] 
         private T _objectPrefab;
@@ -14,12 +14,11 @@ namespace Firefly.Core
         [SerializeField] 
         private int _size;
 
-        private Queue<T> _inactiveQueue;
-        private HashSet<T> _activeSet;
+        private Queue<T> _objectQueue;
 
         public void Create(Transform holder, int size = -1)
         {
-            if (_inactiveQueue != null)
+            if (_objectQueue != null)
             {
                 Debug.LogError($"{nameof(GameObjectPool<T>)}:::This pool has already been created");
                 return;
@@ -27,8 +26,7 @@ namespace Firefly.Core
 
             if (size < 0) size = _size;
 
-            _inactiveQueue = new Queue<T>(size);
-            _activeSet = new HashSet<T>(size);
+            _objectQueue = new Queue<T>(size);
 
             if (!_objectPrefab)
             {
@@ -38,10 +36,10 @@ namespace Firefly.Core
 
             for (int i = 0; i < size; i++)
             {
-                T poolObject = Object.Instantiate(_objectPrefab, holder);
-                poolObject.name = $"{poolObject.name} {i}";
-                _activeSet.Add(poolObject);
-                poolObject.AddToPool(this);
+                T poolableObject = Object.Instantiate(_objectPrefab, holder);
+                poolableObject.name = $"{poolableObject.name} {i}";
+                poolableObject.gameObject.SetActive(false);
+                _objectQueue.Enqueue(poolableObject);
             }
             
             Debug.Log($"Created pool of {_objectPrefab.name} | Size {size}");
@@ -49,36 +47,21 @@ namespace Firefly.Core
 
         public T Acquire(Vector3 position = default)
         {
-            if (_inactiveQueue.Count > 0)
+            T poolableObject = _objectQueue.Dequeue();
+            _objectQueue.Enqueue(poolableObject);
+
+            if (poolableObject.IsActive)
             {
-                T poolableObject = _inactiveQueue.Dequeue();
-                poolableObject.gameObject.SetActive(true);
+                Debug.LogWarning($"{nameof(GameObjectPool<T>)}:::This pool is empty | Recycling an active pool object | This may cause unintended behaviour");
                 poolableObject.transform.position = position;
-                _activeSet.Add(poolableObject);
+                poolableObject.Deactivate();
+                poolableObject.Activate();
                 return poolableObject;
             }
 
-            if (_activeSet.Count > 0)
-            {
-                //find and return the oldest active poolable object here.
-                Debug.LogWarning($"{nameof(GameObjectPool<T>)}:::This pool is empty | Recycling an active pool object | This might cause unintended behaviour");
-            }
-
-            Debug.LogError($"{nameof(GameObjectPool<T>)}:::This pool is completely empty");
-
-            return null;
-        }
-
-        public void Recycle(T poolObject)
-        {
-            if (_activeSet.Remove(poolObject))
-            {
-                _inactiveQueue.Enqueue(poolObject);
-            }
-            else
-            {
-                Debug.LogError($"{nameof(GameObjectPool<T>)}:::Tried to recycle {poolObject.name}, but it does not belong to this pool");
-            }
+            poolableObject.transform.position = position;
+            poolableObject.Activate();
+            return poolableObject;
         }
     }
 }
