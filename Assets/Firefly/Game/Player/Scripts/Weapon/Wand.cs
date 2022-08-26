@@ -48,7 +48,7 @@ namespace Firefly.Game
             Projectile projectile = _projectilePool.Acquire(position);
             projectile.Fire(position, _projectileOrigin.forward, _projectileSpeed);
             
-            CameraDirector.VibrateHeavy(0.15f);
+            CameraDirector.VibrateHeavy();
             
             _fireCooldownTime = _fireCooldown;
         }
