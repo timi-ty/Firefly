@@ -52,7 +52,7 @@ namespace Firefly.Core
 
             if (poolableObject.IsActive)
             {
-                Debug.LogWarning($"{nameof(GameObjectPool<T>)}:::This pool is empty | Recycling an active pool object | This may cause unintended behaviour");
+                Debug.LogWarning($"{nameof(GameObjectPool<T>)}:::This pool is empty | Recycling an active {poolableObject} pool object | This may cause unintended behaviour");
                 poolableObject.transform.position = position;
                 poolableObject.Deactivate();
                 poolableObject.Activate();
