@@ -25,6 +25,8 @@ namespace Firefly.Game.Utility
 
         protected override void OnAwaken()
         {
+            base.OnAwaken();
+            
             Rigidbody = GetComponent<Rigidbody>();
             if (!Rigidbody) Rigidbody = GetComponentInChildren<Rigidbody>();
             if (!Rigidbody) Rigidbody = GetComponentInParent<Rigidbody>();

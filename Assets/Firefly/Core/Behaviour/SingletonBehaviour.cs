@@ -7,7 +7,7 @@ namespace Firefly.Core
     public abstract class SingletonBehaviour<T> : BaseBehaviour, IBaseBehaviour
     {
         protected static T Instance { get; private set; }
-        
+
         public new void Awaken()
         {
             if (Instance == null)

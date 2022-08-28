@@ -10,13 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e405514fa0e94e19b289ff0f062e4471, type: 3}
-  m_Name: DroneOscillationConfig
+  m_Name: DroneOscillationComp3Config
   m_EditorClassIdentifier: 
   _oscillationConfig:
-    _targetOscillationFrequency: 1
+    _targetOscillationFrequency: 0.59
     _targetOscillationMagnitude: 0.5
     _oscillationAgility: 10
-    _positionScale: {x: 0, y: 1, z: 0}
+    _positionScale: {x: 0, y: 0, z: 1}
     _randomizePosition: 0
     _rotationScale: {x: 0, y: 0, z: 0}
+    _randomizePhaseAngle: 1
     _invertSineWave: 0

@@ -7,6 +7,19 @@ namespace Firefly.Game
     
     public class Health
     {
+        private readonly float _maxHealth;
+        
         private float _health;
+
+        public Health(float maxHealth)
+        {
+            _health = maxHealth;
+            _maxHealth = maxHealth;
+        }
+
+        public void Refill()
+        {
+            _health = _maxHealth;
+        }
     }
 }

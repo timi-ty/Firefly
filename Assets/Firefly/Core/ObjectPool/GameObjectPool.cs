@@ -16,6 +16,13 @@ namespace Firefly.Core
 
         private Queue<T> _objectQueue;
 
+        public GameObjectPool(T objectPrefab, int size)
+        {
+            _objectPrefab = objectPrefab;
+            _size = size;
+            _objectQueue = new Queue<T>();
+        }
+
         public void Create(Transform holder, int size = -1)
         {
             if (_objectQueue != null)

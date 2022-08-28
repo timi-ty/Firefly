@@ -72,8 +72,7 @@ namespace Firefly.Game.Utility
 
         #region Worker Fields
 
-        private Vector3 _startPosition;
-        private Vector3 _startRotation;
+        private float _phaseAngle;
         private Vector3 _randomizedPositionScale;
         private float _oscillationFrequency;
         private float _oscillationMagnitude;
@@ -87,6 +86,11 @@ namespace Firefly.Game.Utility
         
         #endregion
 
+        protected override void OnAwaken()
+        {
+            _phaseAngle = OscillationConfig.RandomizePhaseAngle ? Random.Range(0f, 360f) : 0;
+        }
+
         protected void Oscillate()
         {
             bool isDecaying = Time.time >= _decayTime;
@@ -99,7 +103,7 @@ namespace Firefly.Game.Utility
             _oscillationMagnitude = Mathf.MoveTowards(_oscillationMagnitude, OscillationConfig.TargetOscillationMagnitude, 
                 OscillationConfig.OscillationAgility * Time.deltaTime);
             
-            float angle = 2 * Mathf.PI * _oscillationFrequency * Time.time;
+            float angle = 2 * Mathf.PI * _oscillationFrequency * Time.time + _phaseAngle;
             float normalizedMagnitude = OscillationConfig.InvertSineWave ? Mathf.Abs(Mathf.Sin(angle)) : Mathf.Sin(angle);
 
             if (OscillationConfig.RandomizePosition && _wasNegative && normalizedMagnitude >= 0)

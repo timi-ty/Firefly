@@ -4,25 +4,50 @@ namespace Firefly.Core
 {
     public abstract class PoolableGameObject : BaseBehaviour
     {
+        #region Serialized Fields
+
         [Header("Poolable Object")][SerializeField]
+        private bool _ignoreLifetime;
+        [SerializeField]
         private float _lifeTime;
-        
+
+        #endregion
+
+        #region Properties
+
         public bool IsActive { get; private set; }
+        protected bool IgnoreLifetime
+        {
+            get => _ignoreLifetime;
+            set => _ignoreLifetime = value;
+        }
+
+        #endregion
+
+        #region Worker Fields
 
         private float _remainingLifeTime;
-        
+
+        #endregion
+
         private void Update()
         {
-            if(_remainingLifeTime <= 0)
+            if(!IgnoreLifetime && _remainingLifeTime <= 0)
             {
                 Deactivate();
                 return;
             }
 
             _remainingLifeTime -= Time.deltaTime;
+            
+            OnUpdate();
         }
 
-
+        protected virtual void OnUpdate()
+        {
+            
+        }
+        
         public void Activate()
         {
             _remainingLifeTime = _lifeTime;

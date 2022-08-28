@@ -1,17 +1,20 @@
 using System;
 using System.Collections;
+using Firefly.Core.Application;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Firefly.Core
 {
     public abstract class BaseBehaviour : MonoBehaviour, IBaseBehaviour
     {
-        #region Stubbed Out Unity Runtime
+        #region Unity Runtime
 
         private void Awake()
         {
-            //Do nothing
+            if (!IsAwoken && SceneManager.IsSceneAwoken)
+            {
+                Awaken();
+            }
         }
 
         #endregion

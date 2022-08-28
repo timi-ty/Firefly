@@ -23,6 +23,8 @@ namespace Firefly.Game.Utility
         [SerializeField] 
         private Vector3 _rotationScale;
         [SerializeField] 
+        private bool _randomizePhaseAngle;
+        [SerializeField] 
         private bool _invertSineWave;
 
         #endregion
@@ -35,6 +37,7 @@ namespace Firefly.Game.Utility
         public Vector3 PositionScale => _positionScale;
         public bool RandomizePosition => _randomizePosition;
         public Vector3 RotationScale => _rotationScale;
+        public bool RandomizePhaseAngle => _randomizePhaseAngle;
         public bool InvertSineWave => _invertSineWave;
 
         #endregion

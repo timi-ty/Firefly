@@ -11,12 +11,20 @@ namespace Firefly.Core.Application
     {
         [SerializeField] 
         private int _targetFps = 60;
-        
+
+        private bool _isSceneAwoken;
+
+        public static bool IsSceneAwoken => Instance != null && Instance._isSceneAwoken;
+
+        /// <summary>
+        /// This should be the singular entry point for every scene initialization
+        /// </summary>
         private void Awake()
         {
             if (!Instance)
             {
                 UnityEngine.Application.targetFrameRate = _targetFps;
+                _isSceneAwoken = true;
                 AwakenScene();
             }
         }
