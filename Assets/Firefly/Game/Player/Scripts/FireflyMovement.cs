@@ -6,7 +6,7 @@ using Vector2 = UnityEngine.Vector2;
 
 namespace Firefly.Game
 {
-    public class PlayerMovement : BaseBehaviour
+    public class FireflyMovement : BaseBehaviour
     {
         #region Movement Settings
 

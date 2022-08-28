@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace Firefly.Game
 {
-    public class PlayerCombat : BaseBehaviour
+    public class FireflyCombat : BaseBehaviour
     {
         [SerializeField] 
         private Wand _wand;

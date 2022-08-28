@@ -30,9 +30,7 @@ namespace Firefly.Core
             IsAwoken = true;
 
             AwakenChildren(transform);
-            
-            Debug.Log($"Waking up:::{this}");
-            
+
             OnAwaken();
         }
 
@@ -70,6 +68,9 @@ namespace Firefly.Core
             action?.Invoke();
         }
 
-        protected virtual void OnAwaken(){}
+        protected virtual void OnAwaken()
+        {
+            Debug.Log($"Waking up:::{this}");
+        }
     }
 }
